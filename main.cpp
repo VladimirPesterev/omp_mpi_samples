@@ -88,7 +88,7 @@ int main() {
   init(A, B, X, N);
 
 
-  std::clock_t start;
+  clock_t start;
   long double duration;
   start = clock();
 
