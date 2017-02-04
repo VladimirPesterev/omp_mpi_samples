@@ -8,7 +8,7 @@ using namespace std;
 const double Ta = 0.01;
 const double E = 0.00001;
 
-void init(long double** A, long double* B, long double* X, int N) {
+void init(long double** A, long double* B, long double* X, long double* Temp, int N) {
   for(int i = 0; i < N; i++) {
     for(int j = 0; j < N; j++) {
       if(i == j) {
@@ -20,25 +20,24 @@ void init(long double** A, long double* B, long double* X, int N) {
     }
     B[i] = N + 1;
     X[i] = 0;
+    Temp[i] = 0;
   }
 }
 
-void compute(long double** A, long double* B, long double* X, int N) {
-  long double* Xn = new long double[N];
+void compute(long double** A, long double* B, long double* X, long double* Temp, int N) {
   long double summ = 0.0;
   for(int i = 0; i < N; i++) {
     for(int j = 0; j < N; j++) {
       summ += A[i][j] * X[j];
     }
-    Xn[i] = X[i] - Ta * (summ - B[i]);
+    Temp[i] = X[i] - Ta * (summ - B[i]);
     summ = 0.0;
   }
   for(int i = 0; i < N; i++) {
-    X[i] = Xn[i];
+    X[i] = Temp[i];
     cout << "X[" << i << "]=" << X[i] << " ";
   }
   cout << endl;
-  delete[] Xn;
 }
 
 bool isCompleted(long double** A, long double* B, long double* X, int N) {
@@ -63,7 +62,6 @@ bool isCompleted(long double** A, long double* B, long double* X, int N) {
 }
 
 int main() {
-
   int N;
   cout << "введите значение N" << endl;
   cin >> N;
@@ -72,9 +70,10 @@ int main() {
   for (int i = 0; i < N; i++)
     A[i] = new long double [N];
   long double* B = new long double [N];
-  long double *X = new long double [N];
+  long double* X = new long double [N];
+  long double* Temp = new long double [N];
 
-  init(A, B, X, N);
+  init(A, B, X, Temp, N);
 
   clock_t start;
   long double duration;
@@ -82,7 +81,7 @@ int main() {
 
   int count = 0;
   while (true) {
-    compute(A, B, X, N);
+    compute(A, B, X, Temp, N);
     count++;
     if(isCompleted(A, B, X, N)) {
       break;
@@ -97,5 +96,6 @@ int main() {
     delete []A[i];
   delete[] B;
   delete[] X;
+  delete[] Temp;
   return 0;
 }
