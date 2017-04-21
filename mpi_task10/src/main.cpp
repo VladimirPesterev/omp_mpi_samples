@@ -12,13 +12,13 @@ void generate(float *buff, int length) {
 }
 
 int main(int argc, char *argv[]) {
-  srand(time(NULL));
-
   MPI_Init(&argc, &argv);
 
   int processCount, rank;
   MPI_Comm_size(MPI_COMM_WORLD, &processCount);
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+
+  srand(time(NULL) * (rank + 1));
 
   int length = 5;
 

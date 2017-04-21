@@ -4,13 +4,13 @@
 using namespace std;
 
 int main(int argc, char *argv[]) {
-  srand(time(NULL));
-
   MPI_Init(&argc, &argv);
 
   int processCount, rank;
   MPI_Comm_size(MPI_COMM_WORLD, &processCount);
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+
+  srand(time(NULL) * (rank + 1));
 
   if(rank == 0) {
     int count = (rand() % 10) + 2;
@@ -25,7 +25,7 @@ int main(int argc, char *argv[]) {
     MPI_Probe(1, 1, MPI_COMM_WORLD, &status);
     MPI_Get_count(&status, MPI_INT, &count);
     int *randomBuff = new int[count];
-    cout << "Полученный массив от первого процесса:" << endl;
+    cout << "Полученный массив от второго процесса:" << endl;
     for (size_t i = 0; i < count; i++) {
       cout << randomBuff[i] << "_";
     }
