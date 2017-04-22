@@ -15,7 +15,7 @@ int main(int argc, char *argv[]) {
   if(rank == 0) {
     int count = (rand() % 10) + 2;
     int *integers = new int[count];
-    for (size_t i = 0; i < count; i++) {
+    for (auto i = 0; i < count; i++) {
       integers[i] = rand() % 100;
     }
     MPI_Send(integers, count, MPI_INT, 1, 0, MPI_COMM_WORLD);
@@ -25,8 +25,9 @@ int main(int argc, char *argv[]) {
     MPI_Probe(1, 1, MPI_COMM_WORLD, &status);
     MPI_Get_count(&status, MPI_INT, &count);
     int *randomBuff = new int[count];
+    MPI_Recv(randomBuff, count, MPI_INT, 1, 1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
     cout << "Полученный массив от первого процесса:" << endl;
-    for (size_t i = 0; i < count; i++) {
+    for (auto i = 0; i < count; i++) {
       cout << randomBuff[i] << "_";
     }
     cout << endl;
@@ -38,9 +39,9 @@ int main(int argc, char *argv[]) {
     MPI_Probe(0, 0, MPI_COMM_WORLD, &status);
     MPI_Get_count(&status, MPI_INT, &count);
     int *randomBuff = new int[count];
-    MPI_Recv(randomBuff, count, MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
+    MPI_Recv(randomBuff, count, MPI_INT, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
     cout << "Полученный массив от первого процесса:" << endl;
-    for (size_t i = 0; i < count; i++) {
+    for (auto i = 0; i < count; i++) {
       cout << randomBuff[i] << "_";
     }
     cout << endl;
@@ -48,7 +49,7 @@ int main(int argc, char *argv[]) {
 
     count = (rand() % 10) + 2;
     int *integers = new int[count];
-    for (size_t i = 0; i < count; i++) {
+    for (auto i = 0; i < count; i++) {
       integers[i] = rand() % 100;
     }
     MPI_Send(integers, count, MPI_INT, 0, 1, MPI_COMM_WORLD);

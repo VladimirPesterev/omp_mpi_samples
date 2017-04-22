@@ -30,13 +30,13 @@ int main(int argc, char *argv[]) {
     MPI_Get_count(&status, MPI_INT, &count);
     int *recvbuff = new int[count];
     MPI_Recv(recvbuff, count, MPI_INT, status.MPI_SOURCE, 1, MPI_COMM_WORLD, &status);
-    delete[] recvbuff;
     cout << "Получено от: " << status.MPI_SOURCE << endl;
     cout << "Полученный массив:" << endl;
     for (size_t j = 0; j < count; j++) {
       cout << recvbuff[j] << " ";
     }
     cout << endl;
+    delete[] recvbuff;
   }
   else {
     int randomProcess;
