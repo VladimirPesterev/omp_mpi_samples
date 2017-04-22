@@ -50,7 +50,7 @@ int main(int argc, char *argv[]) {
     count = (rand() % 10) + 2;
     int *integers = new int[count];
     for (auto i = 0; i < count; i++) {
-      integers[i] = rand() % 100;
+      integers[i] = rand() % 85;
     }
     MPI_Send(integers, count, MPI_INT, 0, 1, MPI_COMM_WORLD);
     delete[] integers;

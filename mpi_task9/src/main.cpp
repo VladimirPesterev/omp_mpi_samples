@@ -29,20 +29,21 @@ int main(int argc, char *argv[]) {
 
   char recv;
   MPI_Scatter(sendbuff, 1, MPI_CHAR, &recv, 1, MPI_CHAR, 0, MPI_COMM_WORLD);
+  if(rank == 0) {
+    delete[] sendbuff;
+  }
 
   char *recvbuff;
-  if(rank == 0) {
+  if(rank == 1) {
     recvbuff = new char[processCount];
   }
-  MPI_Gather(&recv, 1, MPI_CHAR, recvbuff, 1, MPI_CHAR, 0, MPI_COMM_WORLD);
+  MPI_Gather(&recv, 1, MPI_CHAR, recvbuff, 1, MPI_CHAR, 1, MPI_COMM_WORLD);
 
-  if(rank == 0) {
+  if(rank == 1) {
     for (auto i = 0; i < processCount; i++) {
       cout << recvbuff[i];
     }
     cout << endl;
-
-    delete[] sendbuff;
     delete[] recvbuff;
   }
 
